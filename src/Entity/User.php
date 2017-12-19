@@ -24,6 +24,11 @@ class User
     /**
      * @ORM\Column(type="string")
      */
+    private $email;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     private $password;
 
     /**
@@ -72,5 +77,21 @@ class User
     public function setPassword($password)
     {
         $this->password = $password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
     }
 }
