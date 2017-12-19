@@ -10,12 +10,13 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends Controller
 {
     /**
-     * @Route("/users", name="list_users")
+     * @Route("/users", name="users_list")
      */
     public function index()
     {
@@ -50,10 +51,37 @@ class UserController extends Controller
             $manager->persist($user);
             $manager->flush();
 
-            return $this->redirectToRoute('list_users');
+            return $this->redirectToRoute('users_list');
         }
 
         return $this->render('users/create.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/users/{id}/update", name="user_update")
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     */
+    public function update(Request $request, User $user)
+    {
+        $form = $this->createFormBuilder($user)
+            ->add('username', TextType::class)
+            ->add('email', EmailType::class)
+            ->add('create', SubmitType::class, ['label' => 'Update user'])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('users_list');
+        }
+
+        return $this->render('users/update.html.twig', [
             'form' => $form->createView()
         ]);
     }
