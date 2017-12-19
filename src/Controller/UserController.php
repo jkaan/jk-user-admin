@@ -85,4 +85,19 @@ class UserController extends Controller
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/users/{id}/remove", name="user_remove")
+     * @param User $user
+     * @return Response
+     */
+    public function remove(User $user)
+    {
+        $manager = $this->getDoctrine()->getManager();
+
+        $manager->remove($user);
+        $manager->flush();
+
+        return $this->redirectToRoute('users_list');
+    }
 }
