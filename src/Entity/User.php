@@ -32,6 +32,7 @@ class User
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
      */
     private $password;
 
