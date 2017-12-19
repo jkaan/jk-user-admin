@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -18,11 +19,14 @@ class User
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3)
      */
     private $username;
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\Email()
      */
     private $email;
 
@@ -37,14 +41,6 @@ class User
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**
@@ -90,7 +86,7 @@ class User
     /**
      * @param mixed $email
      */
-    public function setEmail($email): void
+    public function setEmail($email)
     {
         $this->email = $email;
     }
